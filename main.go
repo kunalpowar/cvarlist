@@ -1878,11 +1878,7 @@ func main() {
 	flag.Parse()
 
 	if v, ok := cvars[*q]; ok {
-		if v == "" {
-			v = noDesc
-		}
-
-		fmt.Println(fmt.Sprintf("%s - %s", *q, v))
+		print(*q, v)
 		return
 	}
 
@@ -1893,18 +1889,23 @@ func main() {
 	go func() {
 		for k := range results {
 			v := cvars[k]
-			if v == "" {
-				v = noDesc
-			}
-
-			fmt.Println(fmt.Sprintf("%s - %s", k, v))
+			print(k, v)
 		}
+
 		wg.Done()
 	}()
 
 	go search(*q, results)
 
 	wg.Wait()
+}
+
+func print(cvar, desc string) {
+	if desc == "" {
+		desc = noDesc
+	}
+
+	fmt.Println(fmt.Sprintf("%s - %s", cvar, desc))
 }
 
 func search(q string, results chan string) {
