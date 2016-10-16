@@ -1882,6 +1882,14 @@ func main() {
 		return
 	}
 
+	if *q == "" {
+		for k, v := range cvars {
+			print(k, v)
+		}
+
+		return
+	}
+
 	results := make(chan string)
 	wg := sync.WaitGroup{}
 
